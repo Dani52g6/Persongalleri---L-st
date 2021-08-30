@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="da">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      section {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 10px;
+      }
+
+      article {
+        padding: 0.5em;
+        border: 1px solid orange;
+        border-radius: 25px;
+      }
+
+      img {
+        max-width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <img src="" alt="" />
+
+    <h2 class="titel">Menu</h2>
+
+    <nav></nav>
+
+    <section class="data_container">
+      <template>
+        <article id="liste">
+          <img src="" alt="" class="billede" />
+          <h3 class="navn"></h3>
+
+          <p class="kort-beskrivelse"></p>
+          <p class="pris"></p>
+          <p class="fødselsdag"></p>
+        </article>
+      </template>
+    </section>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", start);
+
+      function start() {
+        let personer;
+        let container;
+        let temp;
+
+        const url = "https://babushka-dd8a.restdb.io/rest/menu";
+        const options = {
+          headers: { "x-apikey": "600ec2fb1346a1524ff12de4" },
+        };
+
+        async function hentdata() {
+          const response = await fetch(url, options);
+          const json = await response.json();
+          vis(json);
+        }
+
+        const container_2 = document.querySelector(".data_container");
+        const babuska_template = document.querySelector("template").content;
+
+        function vis(json) {
+          console.log(json);
+          json.forEach((mad) => {
+            const klon = babuska_template.cloneNode(true);
+            klon.querySelector(".navn").textContent = mad.navn;
+            klon.querySelector(".billede").src =
+              "images/" + mad.billednavn + "-md.jpg";
+            klon.querySelector(".billede").alt = mad.billednavn;
+            klon.querySelector(".pris").textContent =
+              "Pris: " + mad.pris + " kr.";
+            klon.querySelector(".kort-beskrivelse").textContent =
+              mad.kortbeskrivelse;
+
+            container_2.appendChild(klon);
+          });
+        }
+
+        hentdata();
+      }
+    </script>
+  </body>
+</html>
