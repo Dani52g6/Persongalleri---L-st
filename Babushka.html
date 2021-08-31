@@ -6,16 +6,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <style>
+      body {
+        background-color: aliceblue;
+      }
+
+      h1 {
+        background-color: rgb(124, 126, 255);
+        padding: 3vw;
+        text-align: center;
+        margin-top: -15px;
+      }
+
+      header {
+        display: grid;
+        place-content: center;
+      }
+
+      header h2 {
+        display: grid;
+        place-content: center;
+      }
+
       section {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
         gap: 10px;
+        margin: 1vw;
       }
 
       article {
         padding: 0.5em;
-        border: 1px solid orange;
-        border-radius: 25px;
+        border: 4px solid orange;
+        border-radius: 10px;
       }
 
       img {
@@ -25,13 +47,51 @@
       button {
         padding: 1vw;
         margin-bottom: 2vw;
+        border-radius: 15%;
+      }
+
+      #popup {
+        width: 100vw;
+        height: 100vh;
+        background-color: #00000099;
+        position: fixed;
+        top: 0;
+        padding-left: 18vw;
+        padding-top: 0.4vw;
+        display: none;
+        margin: 0;
+      }
+
+      #popup article {
+        background-color: white;
+        width: 60%;
+        display: grid;
+        place-items: center;
+      }
+
+      #popup article p {
+        margin-left: 10vw;
+        margin-right: 10vw;
+      }
+
+      #popup img {
+        max-width: 56%;
+      }
+
+      #popup button {
+        padding: 1vw;
+        margin-bottom: 0;
+      }
+
+      .valgt {
+        background-color: rgb(124, 126, 255);
       }
     </style>
   </head>
   <body>
     <img src="" alt="" />
 
-    <h1 class="titel">Menu</h1>
+    <h1 class="titel">Bistro Babushka</h1>
 
     <header>
       <h2>Alle</h2>
@@ -51,9 +111,18 @@
           <h3 class="navn"></h3>
           <p class="kort-beskrivelse"></p>
           <p class="pris"></p>
-          <p class="fødselsdag"></p>
         </article>
       </template>
+    </section>
+
+    <section id="popup">
+      <button>X</button>
+      <article>
+        <img src="" alt="" class="billede" />
+        <h3 class="navn"></h3>
+        <p class="lang-beskrivelse"></p>
+        <p class="pris"></p>
+      </article>
     </section>
 
     <script>
@@ -111,9 +180,32 @@
               klon.querySelector(".kort-beskrivelse").textContent =
                 mad.kortbeskrivelse;
 
+              klon
+                .querySelector("#liste")
+                .addEventListener("click", () => visDetaljer(mad));
+
               container_2.appendChild(klon);
             }
           });
+        }
+        document
+          .querySelector("#popup button")
+          .addEventListener("click", lukPopup);
+
+        function lukPopup() {
+          document.querySelector("#popup").style.display = "none";
+        }
+
+        function visDetaljer(detaljer) {
+          const popup = document.querySelector("#popup");
+          popup.style.display = "block";
+          popup.querySelector(".billede").src =
+            "images/" + detaljer.billednavn + "-md.jpg";
+          popup.querySelector(".navn").textContent = detaljer.navn;
+          popup.querySelector(".pris").textContent =
+            "Pris: " + detaljer.pris + "kr.";
+          popup.querySelector(".lang-beskrivelse").textContent =
+            detaljer.langbeskrivelse;
         }
       }
     </script>
